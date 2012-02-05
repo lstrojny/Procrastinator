@@ -5,6 +5,7 @@ use Procrastinator\Deferred\Deferred;
 use Procrastinator\Scheduler\Scheduler;
 use Procrastinator\Executor\Executor;
 use DomainException;
+use Procrastinator\Deferred\Builder;
 
 class DeferralManager extends Manager implements Schedulable
 {
@@ -22,6 +23,11 @@ class DeferralManager extends Manager implements Schedulable
         $this->deferreds[$deferred->getName()] = $deferred;
 
         return $this;
+    }
+
+    public function newDeferred()
+    {
+        return new Builder();
     }
 
     public function schedule()

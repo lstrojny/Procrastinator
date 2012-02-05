@@ -111,4 +111,13 @@ class ManagerTest extends TestCase
         $this->assertSame('test1', $deferreds[0]->getName());
         $this->assertSame('test2', $deferreds[1]->getName());
     }
+
+    public function testNewDeferredReturnsNewBuilder()
+    {
+        $builder1 = $this->manager->newDeferred();
+        $builder2 = $this->manager->newDeferred();
+        $this->assertInstanceOf('Procrastinator\Deferred\Builder', $builder1);
+        $this->assertInstanceOf('Procrastinator\Deferred\Builder', $builder2);
+        $this->assertNotSame($builder1, $builder2);
+    }
 }
