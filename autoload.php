@@ -9,5 +9,8 @@ set_include_path(
 );
 
 spl_autoload_register(function($className) {
+    if (!preg_match('/^(Doctrine|Procrastinator)/', $className)) {
+        return;
+    }
     require_once strtr($className, '\\', '/') . '.php';
 });
