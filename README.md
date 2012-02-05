@@ -20,4 +20,6 @@ $procrastinator->register(
         }
     )
 );
+
+$procrastinator->schedule();
 ```
