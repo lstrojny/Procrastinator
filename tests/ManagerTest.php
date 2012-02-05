@@ -63,6 +63,13 @@ class ManagerTest extends TestCase
                         ->will($this->returnCallback(array($this, 'assertIsExecutableManager')));
 
         $executableManager = $this->manager->schedule();
+        $this->assertInstanceOf('Procrastinator\ExecutableManager', $executableManager);
+    }
+
+    public function testSchedulerIsNotCalledWhenNoDefferedsArePresent()
+    {
+        $this->scheduler->expects($this->never())->method('schedule');
+        $this->assertNull($this->manager->schedule());
     }
 
     public function testExecuteCallsExecutor()

@@ -26,6 +26,10 @@ class DeferralManager extends Manager implements Schedulable
 
     public function schedule()
     {
+        if (!$this->deferreds) {
+            return;
+        }
+
         $executableManager = new ExecutableManager($this->deferreds, $this->executor);
         $this->scheduler->schedule($executableManager);
 
