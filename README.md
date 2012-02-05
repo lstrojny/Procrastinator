@@ -2,7 +2,7 @@
 
 A few classes to help you executing complicated tasks (like sending mails) later.
 
-### Example
+### Example using fastcgi_finish_request() to finish request before executing tasks
 ```php
 <?php
 $procrastinator = new \Procrastinator\DeferralManager(
