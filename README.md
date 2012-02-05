@@ -16,9 +16,7 @@ $procrastinator = new \Procrastinator\DeferralManager(
 $procrastinator->register(
     new \Procrastinator\Deferred\CallbackDeferred(
         'some name',
-        function() {
-            sleep(10);
-        }
+        function() {sleep(10);}
     )
 );
 
