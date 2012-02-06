@@ -72,6 +72,22 @@ class ManagerTest extends TestCase
         $this->assertNull($this->manager->schedule());
     }
 
+    public function testSchedulingResetsDeferreds()
+    {
+        $this->mockGetName($this->deferred1, 'test1');
+        $this->mockGetName($this->deferred2, 'test2');
+
+        $this->manager->register($this->deferred1);
+        $this->manager->register($this->deferred2);
+
+        $this->scheduler->expects($this->once())
+                        ->method('schedule')
+                        ->will($this->returnCallback(array($this, 'assertIsExecutableManager')));
+
+        $this->manager->schedule();
+        $this->manager->schedule();
+    }
+
     public function testExecuteCallsExecutor()
     {
         $this->mockGetName($this->deferred1, 'test1');
