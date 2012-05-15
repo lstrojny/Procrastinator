@@ -14,16 +14,17 @@ class SetTimeLimitDecorator extends ExecutorDecorator
      */
     public function __construct(Executor $wrapped, $timeout)
     {
-        $this->timeout = (int)$timeout;
+        $this->timeout = (int) $timeout;
         parent::__construct($wrapped);
     }
 
     /**
      * @param Executable $manager
+     *
+     * remember: calling set_time_limit() restarts the timer at 0
      */
     public function startExecution(Executable $manager)
     {
-        // remember: calling set_time_limit() restarts the timer at 0
         set_time_limit($this->timeout);
 
         parent::startExecution($manager);
