@@ -15,13 +15,16 @@ class PhpFpmExecutorDecoratorTest extends TestCase
     {
         $GLOBALS['fastcgi_finish_request'] = false;
 
-        $this->executor = $this->getMockBuilder('Procrastinator\Executor\Executor')
-                               ->getMock();
+        $this->executor = $this
+            ->getMockBuilder('Procrastinator\Executor\Executor')
+            ->getMock();
         $this->decorator = new PhpFpmExecutorDecorator($this->executor);
-        $this->executable = $this->getMockBuilder('Procrastinator\Executable')
-                                 ->getMock();
-        $this->deferred = $this->getMockBuilder('Procrastinator\Deferred\Deferred')
-                               ->getMock();
+        $this->executable = $this
+            ->getMockBuilder('Procrastinator\Executable')
+            ->getMock();
+        $this->deferred = $this
+            ->getMockBuilder('Procrastinator\Deferred\Deferred')
+            ->getMock();
     }
 
     public function tearDown()
@@ -32,20 +35,29 @@ class PhpFpmExecutorDecoratorTest extends TestCase
     public function testStartExecutionCallsFinishRequestAndThanWrapped()
     {
         $this->assertFalse($GLOBALS['fastcgi_finish_request']);
-        $this->executor->expects($this->once())->method('startExecution')->with($this->executable);
+        $this->executor
+            ->expects($this->once())
+            ->method('startExecution')
+            ->with($this->executable);
         $this->decorator->startExecution($this->executable);
         $this->assertTrue($GLOBALS['fastcgi_finish_request']);
     }
 
     public function testEndExecutionCallsWrapped()
     {
-        $this->executor->expects($this->once())->method('endExecution')->with($this->executable);
+        $this->executor
+            ->expects($this->once())
+            ->method('endExecution')
+            ->with($this->executable);
         $this->decorator->endExecution($this->executable);
     }
 
     public function testExecuteCallsWrapped()
     {
-        $this->executor->expects($this->once())->method('execute')->with($this->deferred);
+        $this->executor
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->deferred);
         $this->decorator->execute($this->deferred);
     }
 }

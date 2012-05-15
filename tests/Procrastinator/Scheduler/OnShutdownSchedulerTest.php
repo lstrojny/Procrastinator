@@ -7,12 +7,11 @@ class OnShutdownSchedulerTest extends TestCase
 {
     function setUp()
     {
-        $this->manager = $this->getMockBuilder('Procrastinator\DeferralManager')
-                              ->disableOriginalConstructor()
-                              ->getMock();
-
+        $this->manager = $this
+            ->getMockBuilder('Procrastinator\DeferralManager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->strategy = new OnShutdownScheduler();
-
     }
 
     function tearDown()
@@ -23,7 +22,9 @@ class OnShutdownSchedulerTest extends TestCase
     function testCallRegisterShutdownOnSchedule()
     {
         $this->assertArrayNotHasKey('register_shutdown_function', $GLOBALS);
-        $this->manager->expects($this->never())->method('execute');
+        $this->manager
+            ->expects($this->never())
+            ->method('execute');
         $this->strategy->schedule($this->manager);
 
         $this->assertSame(array($this->manager, 'execute'), $GLOBALS['register_shutdown_function']);

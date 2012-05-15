@@ -22,40 +22,58 @@ class DoctrineEventConditionalExecutorDecoratorTest extends TestCase
             $this->markTestSkipped('Doctrine not present');
         }
 
-        $this->executor = $this->getMockBuilder('Procrastinator\Executor\Executor')
-                               ->getMock();
+        $this->executor = $this
+            ->getMockBuilder('Procrastinator\Executor\Executor')
+            ->getMock();
         $this->decorator = new DoctrineEventConditionalExecutorDecorator($this->executor);
-        $this->executable = $this->getMockBuilder('Procrastinator\Executable')
-                                 ->getMock();
-        $this->deferred = $this->getMockBuilder('Procrastinator\Deferred\Deferred')
-                               ->getMock();
-        $this->doctrineDeferred = $this->getMockBuilder('Procrastinator\Deferred\DoctrineEventConditionalDeferred')
-                                       ->disableOriginalConstructor()
-                                       ->getMock();
+        $this->executable = $this
+            ->getMockBuilder('Procrastinator\Executable')
+            ->getMock();
+        $this->deferred = $this
+            ->getMockBuilder('Procrastinator\Deferred\Deferred')
+            ->getMock();
+        $this->doctrineDeferred = $this
+            ->getMockBuilder('Procrastinator\Deferred\DoctrineEventConditionalDeferred')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function testStartExecutionCallsFinishRequestAndThanWrapped()
     {
-        $this->executor->expects($this->once())->method('startExecution')->with($this->executable);
+        $this->executor
+            ->expects($this->once())
+            ->method('startExecution')
+            ->with($this->executable);
         $this->decorator->startExecution($this->executable);
     }
 
     public function testEndExecutionCallsWrapped()
     {
-        $this->executor->expects($this->once())->method('endExecution')->with($this->executable);
+        $this->executor
+            ->expects($this->once())
+            ->method('endExecution')
+            ->with($this->executable);
         $this->decorator->endExecution($this->executable);
     }
 
     public function testExecuteCallsWrappedForNormalDeferreds()
     {
-        $this->executor->expects($this->once())->method('execute')->with($this->deferred);
+        $this->executor
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->deferred);
         $this->decorator->execute($this->deferred);
     }
 
     public function testDoctrineConditionalDeferredIsNotExecutedIfEventNotFired()
     {
-        $this->doctrineDeferred->expects($this->once())->method('getEvents')->will($this->returnValue(array('evt')));
-        $this->executor->expects($this->never())->method('execute');
+        $this->doctrineDeferred
+            ->expects($this->once())
+            ->method('getEvents')
+            ->will($this->returnValue(array('evt')));
+        $this->executor
+            ->expects($this->never())
+            ->method('execute');
         $this->decorator->execute($this->doctrineDeferred);
     }
 
@@ -88,9 +106,15 @@ class DoctrineEventConditionalExecutorDecoratorTest extends TestCase
      */
     public function testDoctrineConditionalDeferredIsExecutedIfEventFired($event)
     {
-        $this->doctrineDeferred->expects($this->once())->method('getEvents')->will($this->returnValue(array('evt1', $event, 'evt2')));
+        $this->doctrineDeferred
+            ->expects($this->once())
+            ->method('getEvents')
+            ->will($this->returnValue(array('evt1', $event, 'evt2')));
         $this->decorator->{$event}(EventArgs::getEmptyInstance());
-        $this->executor->expects($this->once())->method('execute')->with($this->doctrineDeferred);
+        $this->executor
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->doctrineDeferred);
         $this->decorator->execute($this->doctrineDeferred);
     }
 }
