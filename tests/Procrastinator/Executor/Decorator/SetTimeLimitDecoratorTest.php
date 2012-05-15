@@ -4,7 +4,7 @@ namespace Procrastinator\Executor\Decorator;
 use PHPUnit_Framework_TestCase as TestCase;
 use Procrastinator\Deferred\CallbackDeferred;
 
-class TimeoutExecutorDecoratorTest extends TestCase
+class SetTimeLimitDecoratorTest extends TestCase
 {
     protected $executor;
     protected $decorator;
@@ -17,7 +17,7 @@ class TimeoutExecutorDecoratorTest extends TestCase
 
         $this->executor = $this->getMockBuilder('Procrastinator\Executor\Executor')
                                ->getMock();
-        $this->decorator = new TimeoutExecutorDecorator($this->executor, 120);
+        $this->decorator = new SetTimeLimitDecorator($this->executor, 120);
         $this->executable = $this->getMockBuilder('Procrastinator\Executable')
                                  ->getMock();
         $this->deferred = $this->getMockBuilder('Procrastinator\Deferred\Deferred')

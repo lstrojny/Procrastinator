@@ -4,7 +4,7 @@ namespace Procrastinator\Executor\Decorator;
 use Procrastinator\Executor\Executor;
 use Procrastinator\Executable;
 
-class TimeoutExecutorDecorator extends ExecutorDecorator
+class SetTimeLimitDecorator extends ExecutorDecorator
 {
     protected $timeout;
 
