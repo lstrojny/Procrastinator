@@ -4,7 +4,7 @@ namespace Procrastinator\Executor\Decorator;
 use PHPUnit_Framework_TestCase as TestCase;
 use Procrastinator\Deferred\CallbackDeferred;
 
-class PhpFpmExecutorDecoratorTest extends AbstractPhpFpmExecutorDecoratorTest
+class PhpFpmTimeoutExecutorDecoratorTest extends AbstractPhpFpmExecutorDecoratorTest
 {
     protected $executor;
     protected $decorator;
@@ -17,7 +17,7 @@ class PhpFpmExecutorDecoratorTest extends AbstractPhpFpmExecutorDecoratorTest
 
         $this->executor = $this->getMockBuilder('Procrastinator\Executor\Executor')
                                ->getMock();
-        $this->decorator = new PhpFpmExecutorDecorator($this->executor);
+        $this->decorator = new PhpFpmTimeoutExecutorDecorator($this->executor);
         $this->executable = $this->getMockBuilder('Procrastinator\Executable')
                                  ->getMock();
         $this->deferred = $this->getMockBuilder('Procrastinator\Deferred\Deferred')
@@ -32,9 +32,12 @@ class PhpFpmExecutorDecoratorTest extends AbstractPhpFpmExecutorDecoratorTest
     public function testStartExecutionCallsFinishRequestAndThanWrapped()
     {
         $this->assertFalse($GLOBALS['fastcgi_finish_request']);
+        $this->assertSame(0, $this->decorator->getTimeout());
         $this->executor->expects($this->once())->method('startExecution')->with($this->executable);
+        $this->assertSame($this->decorator, $this->decorator->setTimeout(120));
         $this->decorator->startExecution($this->executable);
         $this->assertTrue($GLOBALS['fastcgi_finish_request']);
+        $this->assertSame(120, $this->decorator->getTimeout());
     }
 
     public function testEndExecutionCallsWrapped()
