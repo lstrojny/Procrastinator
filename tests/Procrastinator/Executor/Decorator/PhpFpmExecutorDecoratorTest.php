@@ -4,12 +4,12 @@ namespace Procrastinator\Executor\Decorator;
 use PHPUnit_Framework_TestCase as TestCase;
 use Procrastinator\Deferred\CallbackDeferred;
 
-class PhpFpmExecutorDecoratorTest extends AbstractPhpFpmExecutorDecoratorTest
+class PhpFpmExecutorDecoratorTest extends TestCase
 {
-    protected $executor;
-    protected $decorator;
-    protected $executable;
-    protected $deferred;
+    private $executor;
+    private $decorator;
+    private $executable;
+    private $deferred;
 
     public function setUp()
     {
@@ -48,4 +48,9 @@ class PhpFpmExecutorDecoratorTest extends AbstractPhpFpmExecutorDecoratorTest
         $this->executor->expects($this->once())->method('execute')->with($this->deferred);
         $this->decorator->execute($this->deferred);
     }
+}
+
+function fastcgi_finish_request()
+{
+    $GLOBALS['fastcgi_finish_request'] = true;
 }
