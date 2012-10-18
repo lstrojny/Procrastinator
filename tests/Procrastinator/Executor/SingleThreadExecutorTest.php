@@ -12,7 +12,7 @@ class SingleThreadExecutorTest extends TestCase
     public function setUp()
     {
         $this->executor = new SingleThreadExecutor();
-        $this->deferred = new CallbackDeferred('name', array($this, 'callback'));
+        $this->deferred = new CallbackDeferred('name', array($this, 'procrastinatorCallback'));
     }
 
     public function testExecuteCallsCallback()
@@ -22,7 +22,7 @@ class SingleThreadExecutorTest extends TestCase
         $this->assertSame(1, $this->called);
     }
 
-    public function callback()
+    public function procrastinatorCallback()
     {
         $this->called++;
     }

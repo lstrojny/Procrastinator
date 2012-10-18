@@ -5,13 +5,13 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class CallbackDeferredTest extends TestCase
 {
-    public function callback()
+    public function procrastinatorCallback()
     {
     }
 
     public function setUp()
     {
-        $this->deferred = new CallbackDeferred('name', array($this, 'callback'));
+        $this->deferred = new CallbackDeferred('name', array($this, 'procrastinatorCallback'));
     }
 
     public function testGetName()
@@ -21,7 +21,7 @@ class CallbackDeferredTest extends TestCase
 
     public function testGetCallback()
     {
-        $this->assertSame(array($this, 'callback'), $this->deferred->getCallback());
+        $this->assertSame(array($this, 'procrastinatorCallback'), $this->deferred->getCallback());
     }
 
     public function testExceptionIsThrownWithInvalidCallback()
