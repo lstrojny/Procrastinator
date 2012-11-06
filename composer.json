@@ -1,5 +1,5 @@
 {
-    "name": "lstrojny/Procrastinator",
+    "name": "lstrojny/procrastinator",
     "description": "Do things as late as possible in a request",
     "require": {
         "doctrine/orm": "2.*"
