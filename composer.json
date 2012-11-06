@@ -1,0 +1,16 @@
+{
+    "name": "lstrojny/Procrastinator",
+    "description": "Do things as late as possible in a request",
+    "require": {
+        "doctrine/orm": "2.*"
+    },
+    "authors": [
+        {
+            "name": "Lars Strojny",
+            "email": "lstrojny@php.net"
+        }
+    ],
+    "autoload": {
+        "psr-0": {"Procrastinator": "src"}
+    }
+}
