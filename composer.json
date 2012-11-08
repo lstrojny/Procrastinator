@@ -1,6 +1,6 @@
 {
     "name": "lstrojny/procrastinator",
-    "description": "Do things as late as possible in a request",
+    "description": "Do things as late as possible in a request. Don’t let your users wait",
     "license": "MIT",
     "require": {
         "doctrine/orm": "2.*"
