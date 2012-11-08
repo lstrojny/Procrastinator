@@ -3,6 +3,7 @@
     "description": "Do things as late as possible in a request. Don’t let your users wait",
     "license": "MIT",
     "require": {
+        "php": ">=5.3.0",
         "doctrine/orm": "2.*"
     },
     "authors": [
