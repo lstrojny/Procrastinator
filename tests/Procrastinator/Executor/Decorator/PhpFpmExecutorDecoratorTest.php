@@ -10,11 +10,10 @@ class PhpFpmExecutorDecoratorTest extends TestCase
     private $decorator;
     private $executable;
     private $deferred;
+    private $functions;
 
     public function setUp()
     {
-        $GLOBALS['fastcgi_finish_request'] = false;
-
         $this->executor = $this
             ->getMockBuilder('Procrastinator\Executor\Executor')
             ->getMock();
@@ -25,22 +24,44 @@ class PhpFpmExecutorDecoratorTest extends TestCase
         $this->deferred = $this
             ->getMockBuilder('Procrastinator\Deferred\Deferred')
             ->getMock();
-    }
-
-    public function tearDown()
-    {
-        unset($GLOBALS['fastcgi_finish_request']);
+        $this->functions = \PHPUnit_Extension_FunctionMocker::start($this, __NAMESPACE__)
+            ->mockFunction('function_exists')
+            ->mockFunction('fastcgi_finish_request')
+            ->getMock();
     }
 
     public function testStartExecutionCallsFinishRequestAndThanWrapped()
     {
-        $this->assertFalse($GLOBALS['fastcgi_finish_request']);
         $this->executor
             ->expects($this->once())
             ->method('startExecution')
             ->with($this->executable);
+        $this->functions
+            ->expects($this->once())
+            ->method('function_exists')
+            ->with('fastcgi_finish_request')
+            ->will($this->returnValue(true));
+        $this->functions
+            ->expects($this->once())
+            ->method('fastcgi_finish_request');
         $this->decorator->startExecution($this->executable);
-        $this->assertTrue($GLOBALS['fastcgi_finish_request']);
+    }
+
+    public function testStartExecutionDoesNotCallFinishRequestIfNotExist()
+    {
+        $this->executor
+            ->expects($this->once())
+            ->method('startExecution')
+            ->with($this->executable);
+        $this->functions
+            ->expects($this->once())
+            ->method('function_exists')
+            ->with('fastcgi_finish_request')
+            ->will($this->returnValue(false));
+        $this->functions
+            ->expects($this->never())
+            ->method('fastcgi_finish_request');
+        $this->decorator->startExecution($this->executable);
     }
 
     public function testEndExecutionCallsWrapped()
@@ -60,9 +81,4 @@ class PhpFpmExecutorDecoratorTest extends TestCase
             ->with($this->deferred);
         $this->decorator->execute($this->deferred);
     }
-}
-
-function fastcgi_finish_request()
-{
-    $GLOBALS['fastcgi_finish_request'] = true;
 }

@@ -6,15 +6,14 @@ use Procrastinator\Deferred\CallbackDeferred;
 
 class SetTimeLimitDecoratorTest extends TestCase
 {
-    protected $executor;
-    protected $decorator;
-    protected $executable;
-    protected $deferred;
+    private $executor;
+    private $decorator;
+    private $executable;
+    private $deferred;
+    private $functions;
 
     public function setUp()
     {
-        $GLOBALS['fastcgi_finish_request'] = false;
-
         $this->executor = $this
             ->getMockBuilder('Procrastinator\Executor\Executor')
             ->getMock();
@@ -25,11 +24,18 @@ class SetTimeLimitDecoratorTest extends TestCase
         $this->deferred = $this
             ->getMockBuilder('Procrastinator\Deferred\Deferred')
             ->getMock();
+        $this->functions = \PHPUnit_Extension_FunctionMocker::start($this, __NAMESPACE__)
+            ->mockFunction('set_time_limit')
+            ->getMock();
     }
 
     public function testStartExecutionCallsFinishRequestAndThanWrapped()
     {
         $this->assertSame(120, $this->decorator->getTimeout());
+        $this->functions
+            ->expects($this->once())
+            ->method('set_time_limit')
+            ->with(120);
         $this->executor
             ->expects($this->once())
             ->method('startExecution')

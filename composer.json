@@ -6,6 +6,9 @@
         "php": ">=5.3.0",
         "doctrine/orm": "2.*"
     },
+    "require-dev": {
+        "lstrojny/phpunit-function-mocker": "dev-master"
+    },
     "authors": [
         {
             "name": "Lars Strojny",
