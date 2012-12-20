@@ -5,7 +5,7 @@ php:
   - 5.5
 
 env:
-  - DC_VERSION=2.1
+  - DC_VERSION=2.1.x
   - DC_VERSION=2.2
   - DC_VERSION=2.3
   - DC_VERSION=dev-master
