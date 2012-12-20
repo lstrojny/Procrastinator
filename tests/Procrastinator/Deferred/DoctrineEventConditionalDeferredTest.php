@@ -7,13 +7,13 @@ class DoctrineEventConditionalDeferredTest extends TestCase
 {
     public function testEventsMustBeGiven()
     {
-        $this->setExpectedException('InvalidArgumentException', 'No events specified');
+        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'No events specified');
         new DoctrineEventConditionalDeferred('test', array($this, __FUNCTION__), null);
     }
 
     public function testEventsMustBeGiven2()
     {
-        $this->setExpectedException('InvalidArgumentException', 'No events specified');
+        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'No events specified');
         new DoctrineEventConditionalDeferred('test', array($this, __FUNCTION__), array());
     }
 

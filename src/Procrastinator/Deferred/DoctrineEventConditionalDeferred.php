@@ -1,6 +1,7 @@
 <?php
 namespace Procrastinator\Deferred;
-use InvalidArgumentException;
+
+use Procrastinator\Exception\InvalidArgumentException;
 
 class DoctrineEventConditionalDeferred extends CallbackDeferred
 {

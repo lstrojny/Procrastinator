@@ -12,14 +12,14 @@ class BuilderTest extends TestCase
 
     public function testExceptionIsThrownWithoutName()
     {
-        $this->setExpectedException('InvalidArgumentException', 'No name given. Call name()');
+        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'No name given. Call name()');
         $this->builder->call(array($this, __FUNCTION__));
         $this->builder->build();
     }
 
     public function testExceptionIsThrownWithoutCallback()
     {
-        $this->setExpectedException('InvalidArgumentException', 'No callback given. Call call()');
+        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'No callback given. Call call()');
         $this->builder->name('test');
         $this->builder->build();
     }

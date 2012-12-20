@@ -26,7 +26,7 @@ class CallbackDeferredTest extends TestCase
 
     public function testExceptionIsThrownWithInvalidCallback()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid callback given');
+        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'Invalid callback given');
         new CallbackDeferred('name', array($this, 'something'));
     }
 }

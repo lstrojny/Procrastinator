@@ -1,7 +1,7 @@
 <?php
 namespace Procrastinator\Deferred;
 
-use InvalidArgumentException;
+use Procrastinator\Exception\InvalidArgumentException;
 
 class CallbackDeferred implements Deferred
 {
