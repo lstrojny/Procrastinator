@@ -2,9 +2,17 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
+
+env:
+  - DC_VERSION=2.1
+  - DC_VERSION=2.2
+  - DC_VERSION=2.3
+  - DC_VERSION=dev-master
 
 before_script:
   - wget http://getcomposer.org/composer.phar
+  - php composer.phar require doctrine/orm:${DC_VERSION}
   - php composer.phar install --dev
 
 script:
