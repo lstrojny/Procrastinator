@@ -12,7 +12,7 @@ env:
 
 before_script:
   - wget http://getcomposer.org/composer.phar
-  - php composer.phar require doctrine/orm:${DC_VERSION} doctrine/dbal:${DC_VERSION}
+  - php composer.phar require doctrine/orm:${DC_VERSION} doctrine/dbal:${DC_VERSION} doctrine/common:${DC_VERSION}
   - php composer.phar install --dev
 
 script:
