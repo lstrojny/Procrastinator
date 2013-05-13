@@ -1,11 +1,11 @@
 <?php
 namespace Procrastinator\Scheduler;
 
-use Procrastinator\Managable;
+use Procrastinator\Executable;
 
 class ImmediateScheduler implements Scheduler
 {
-    public function schedule(Managable $manager)
+    public function schedule(Executable $manager)
     {
         $manager->execute();
     }

@@ -1,7 +1,7 @@
 <?php
 namespace Procrastinator;
 
-abstract class Manager implements Managable
+abstract class Manager implements Manageable
 {
     protected $deferreds = array();
 

@@ -1,7 +1,7 @@
 <?php
 namespace Procrastinator;
 
-interface Executable extends Managable
+interface Executable extends Manageable
 {
     public function execute();
     public function getExecutor();
