@@ -8,7 +8,7 @@ env:
   - DC_VERSION=2.1.*
   - DC_VERSION=2.2.*
   - DC_VERSION=2.3.*
-  - DC_VERSION=dev-master
+  - DC_VERSION=2.4.*
 
 before_script:
   - wget http://getcomposer.org/composer.phar
