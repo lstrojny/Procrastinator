@@ -12,7 +12,6 @@ env:
   - DC_VERSION=2.4.*
 
 before_script:
-  - wget http://getcomposer.org/composer.phar
   - composer require doctrine/orm:${DC_VERSION} doctrine/dbal:${DC_VERSION} doctrine/common:${DC_VERSION}
   - composer install --dev
 
