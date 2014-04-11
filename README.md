@@ -1,4 +1,4 @@
-# Procrastinator for PHP: do stuff later [![Build Status](https://secure.travis-ci.org/lstrojny/Procrastinator.svg)](http://travis-ci.org/lstrojny/Procrastinator)
+# Procrastinator for PHP: do stuff later [![Build Status](https://secure.travis-ci.org/lstrojny/Procrastinator.svg)](http://travis-ci.org/lstrojny/Procrastinator) [![Dependency Status](https://www.versioneye.com/user/projects/523ed7e0632bac1b0b00b265/badge.png)](https://www.versioneye.com/user/projects/523ed7e0632bac1b0b00b265)
 
 A few classes to help you executing complicated tasks (like sending mails) later.
 
