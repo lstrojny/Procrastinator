@@ -124,6 +124,11 @@ class DoctrineEventConditionalExecutorDecorator extends ExecutorDecorator
         $this->rememberEvent(__FUNCTION__);
     }
 
+    public function onClassMetadataNotFound(EventArgs $args)
+    {
+        $this->rememberEvent(__FUNCTION__);
+    }
+
     public function execute(Deferred $deferred)
     {
         if (!$deferred instanceof DoctrineEventConditionalDeferred) {
