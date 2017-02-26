@@ -8,6 +8,10 @@ php:
   - nightly
   - hhvm
 
+matrix:
+  allow_failures:
+    - php: hhvm
+
 env:
   - DC_VERSION=2.1.*
   - DC_VERSION=2.2.*
