@@ -3,39 +3,45 @@ namespace Procrastinator\Executor\Decorator;
 
 namespace Procrastinator\Executor\Decorator;
 
-use PHPUnit_Framework_TestCase as TestCase;
-use Procrastinator\Deferred\CallbackDeferred;
 use Doctrine\Common\EventArgs;
+use Doctrine\DBAL\Events as DbalEvents;
+use Doctrine\ORM\Events as OrmEvents;
+use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Procrastinator\Deferred\Deferred;
+use Procrastinator\Deferred\DoctrineEventConditionalDeferred;
+use Procrastinator\Executable;
+use Procrastinator\Executor\Executor;
 use ReflectionClass;
 
 class DoctrineEventConditionalExecutorDecoratorTest extends TestCase
 {
-    private $executor;
+    /** @var DoctrineEventConditionalExecutorDecorator */
     private $decorator;
+
+    /** @var Executor|MockObject */
+    private $executor;
+
+    /** @var Executable|MockObject */
     private $executable;
+
+    /** @var  Deferred|MockObject */
     private $deferred;
+
+    /** @var DoctrineEventConditionalDeferred|MockObject */
     private $doctrineDeferred;
 
-    public function setUp()
+    protected function setUp()
     {
-        if (!class_exists('Doctrine\ORM\Events')) {
+        if (!class_exists(OrmEvents::class)) {
             $this->markTestSkipped('Doctrine not present');
         }
 
-        $this->executor = $this
-            ->getMockBuilder('Procrastinator\Executor\Executor')
-            ->getMock();
+        $this->executor = $this->createMock(Executor::class);
         $this->decorator = new DoctrineEventConditionalExecutorDecorator($this->executor);
-        $this->executable = $this
-            ->getMockBuilder('Procrastinator\Executable')
-            ->getMock();
-        $this->deferred = $this
-            ->getMockBuilder('Procrastinator\Deferred\Deferred')
-            ->getMock();
-        $this->doctrineDeferred = $this
-            ->getMockBuilder('Procrastinator\Deferred\DoctrineEventConditionalDeferred')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->executable = $this->createMock(Executable::class);
+        $this->deferred = $this->createMock(Deferred::class);
+        $this->doctrineDeferred = $this->createMock(DoctrineEventConditionalDeferred::class);
     }
 
     public function testStartExecutionCallsFinishRequestAndThanWrapped()
@@ -70,7 +76,7 @@ class DoctrineEventConditionalExecutorDecoratorTest extends TestCase
         $this->doctrineDeferred
             ->expects($this->once())
             ->method('getEvents')
-            ->will($this->returnValue(array('evt')));
+            ->will($this->returnValue(['evt']));
         $this->executor
             ->expects($this->never())
             ->method('execute');
@@ -79,14 +85,14 @@ class DoctrineEventConditionalExecutorDecoratorTest extends TestCase
 
     public function provideDoctrineEvents()
     {
-        $events = array();
-        $dbalEvents = new ReflectionClass('Doctrine\DBAL\Events');
+        $events = [];
+        $dbalEvents = new ReflectionClass(DbalEvents::class);
         foreach ($dbalEvents->getConstants() as $constant) {
             $this->assertSame($constant, constant('Doctrine\DBAL\Events::' . $constant));
             $events[] = $constant;
         }
 
-        $ormEvents = new ReflectionClass('Doctrine\ORM\Events');
+        $ormEvents = new ReflectionClass(OrmEvents::class);
         foreach ($ormEvents->getConstants() as $constant) {
             $this->assertSame($constant, constant('Doctrine\ORM\Events::' . $constant));
             $events[] = $constant;
@@ -95,21 +101,19 @@ class DoctrineEventConditionalExecutorDecoratorTest extends TestCase
         $this->assertSame($events, array_unique($events));
 
         foreach ($events as $k => $v) {
-            $events[$k] = array($v);
+            $events[$k] = [$v];
         }
 
         return $events;
     }
 
-    /**
-     * @dataProvider provideDoctrineEvents
-     */
+    /** @dataProvider provideDoctrineEvents */
     public function testDoctrineConditionalDeferredIsExecutedIfEventFired($event)
     {
         $this->doctrineDeferred
             ->expects($this->once())
             ->method('getEvents')
-            ->will($this->returnValue(array('evt1', $event, 'evt2')));
+            ->will($this->returnValue(['evt1', $event, 'evt2']));
         $this->decorator->{$event}(EventArgs::getEmptyInstance());
         $this->executor
             ->expects($this->once())

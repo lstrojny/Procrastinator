@@ -1,17 +1,21 @@
 <?php
 namespace Procrastinator\Deferred;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Procrastinator\Exception\InvalidArgumentException;
 
 class CallbackDeferredTest extends TestCase
 {
+    /** @var CallbackDeferred */
+    private $deferred;
+
     public function procrastinatorCallback()
     {
     }
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->deferred = new CallbackDeferred('name', array($this, 'procrastinatorCallback'));
+        $this->deferred = new CallbackDeferred('name', [$this, 'procrastinatorCallback']);
     }
 
     public function testGetName()
@@ -21,12 +25,6 @@ class CallbackDeferredTest extends TestCase
 
     public function testGetCallback()
     {
-        $this->assertSame(array($this, 'procrastinatorCallback'), $this->deferred->getCallback());
-    }
-
-    public function testExceptionIsThrownWithInvalidCallback()
-    {
-        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'Invalid callback given');
-        new CallbackDeferred('name', array($this, 'something'));
+        $this->assertSame([$this, 'procrastinatorCallback'], $this->deferred->getCallback());
     }
 }

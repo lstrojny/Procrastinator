@@ -1,30 +1,37 @@
 <?php
 namespace Procrastinator\Executor\Decorator;
 
-use PHPUnit_Framework_TestCase as TestCase;
-use Procrastinator\Deferred\CallbackDeferred;
+use PHPUnit\Extension\FunctionMocker;
+use PHPUnit\Framework\TestCase;
+use Procrastinator\Deferred\Deferred;
+use Procrastinator\Executable;
+use Procrastinator\Executor\Executor;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class PhpFpmExecutorDecoratorTest extends TestCase
 {
-    private $executor;
+    /** @var PhpFpmExecutorDecorator */
     private $decorator;
+
+    /** @var Executor|MockObject */
+    private $executor;
+
+    /** @var Executable|MockObject */
     private $executable;
+
+    /** @var Deferred|MockObject */
     private $deferred;
+
+    /** @var MockObject */
     private $functions;
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->executor = $this
-            ->getMockBuilder('Procrastinator\Executor\Executor')
-            ->getMock();
+        $this->executor = $this->createMock(Executor::class);
         $this->decorator = new PhpFpmExecutorDecorator($this->executor);
-        $this->executable = $this
-            ->getMockBuilder('Procrastinator\Executable')
-            ->getMock();
-        $this->deferred = $this
-            ->getMockBuilder('Procrastinator\Deferred\Deferred')
-            ->getMock();
-        $this->functions = \PHPUnit_Extension_FunctionMocker::start($this, __NAMESPACE__)
+        $this->executable = $this->createMock(Executable::class);
+        $this->deferred = $this->createMock(Deferred::class);
+        $this->functions = FunctionMocker::start($this, __NAMESPACE__)
             ->mockFunction('function_exists')
             ->mockFunction('fastcgi_finish_request')
             ->getMock();

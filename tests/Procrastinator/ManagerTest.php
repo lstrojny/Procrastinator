@@ -1,33 +1,36 @@
 <?php
 namespace Procrastinator;
 
-use PHPUnit_Framework_TestCase as TestCase;
-use Procrastinator\DeferralManager;
+use PHPUnit\Framework\TestCase;
+use Procrastinator\Deferred\Builder;
 use Procrastinator\Deferred\Deferred;
-use DomainException;
+use Procrastinator\Executor\Executor;
+use Procrastinator\Scheduler\Scheduler;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class ManagerTest extends TestCase
 {
+    /** @var DeferralManager */
     private $manager;
+
+    /** @var Deferred|MockObject */
     private $deferred1;
+
+    /** @var Deferred|MockObject */
     private $deferred2;
+
+    /** @var Scheduler|MockObject */
     private $scheduler;
+
+    /** @var Executor|MockObject */
     private $executor;
 
     public function setUp()
     {
-        $this->deferred1 = $this
-            ->getMockBuilder('Procrastinator\Deferred\Deferred')
-            ->getMock();
-        $this->deferred2 = $this
-            ->getMockBuilder('Procrastinator\Deferred\Deferred')
-            ->getMock();
-        $this->scheduler = $this
-            ->getMockBuilder('Procrastinator\Scheduler\Scheduler')
-            ->getMock();
-        $this->executor = $this
-            ->getMockBuilder('Procrastinator\Executor\Executor')
-            ->getMock();
+        $this->deferred1 = $this->createMock(Deferred::class);
+        $this->deferred2 = $this->createMock(Deferred::class);
+        $this->scheduler = $this->createMock(Scheduler::class);
+        $this->executor = $this->createMock(Executor::class);
         $this->manager = new DeferralManager($this->scheduler, $this->executor);
     }
 
@@ -65,10 +68,10 @@ class ManagerTest extends TestCase
         $this->scheduler
             ->expects($this->once())
             ->method('schedule')
-            ->will($this->returnCallback(array($this, 'assertIsExecutableManager')));
+            ->will($this->returnCallback([$this, 'assertIsExecutableManager']));
 
         $executableManager = $this->manager->schedule();
-        $this->assertInstanceOf('Procrastinator\ExecutableManager', $executableManager);
+        $this->assertInstanceOf(ExecutableManager::class, $executableManager);
     }
 
     public function testSchedulerIsNotCalledWhenNoDefferedsArePresent()
@@ -88,7 +91,7 @@ class ManagerTest extends TestCase
         $this->scheduler
             ->expects($this->once())
             ->method('schedule')
-            ->will($this->returnCallback(array($this, 'assertIsExecutableManager')));
+            ->will($this->returnCallback([$this, 'assertIsExecutableManager']));
 
         $this->manager->schedule();
         $this->manager->schedule();
@@ -101,7 +104,7 @@ class ManagerTest extends TestCase
         $this->executor
             ->expects($this->at(0))
             ->method('startExecution')
-            ->will($this->returnCallback(array($this, 'assertIsExecutableManager')));
+            ->will($this->returnCallback([$this, 'assertIsExecutableManager']));
         $this->executor
             ->expects($this->at(1))
             ->method('execute')
@@ -113,7 +116,7 @@ class ManagerTest extends TestCase
         $this->executor
             ->expects($this->at(3))
             ->method('endExecution')
-            ->will($this->returnCallback(array($this, 'assertIsExecutableManager')));
+            ->will($this->returnCallback([$this, 'assertIsExecutableManager']));
         $this->manager
             ->register($this->deferred1);
         $this->manager
@@ -125,6 +128,7 @@ class ManagerTest extends TestCase
 
     private function mockGetName(Deferred $deferred, $name = 'testname')
     {
+        /** @var $deferred MockObject */
         $deferred
             ->expects($this->any())
             ->method('getName')
@@ -145,8 +149,8 @@ class ManagerTest extends TestCase
     {
         $builder1 = $this->manager->newDeferred();
         $builder2 = $this->manager->newDeferred();
-        $this->assertInstanceOf('Procrastinator\Deferred\Builder', $builder1);
-        $this->assertInstanceOf('Procrastinator\Deferred\Builder', $builder2);
+        $this->assertInstanceOf(Builder::class, $builder1);
+        $this->assertInstanceOf(Builder::class, $builder2);
         $this->assertNotSame($builder1, $builder2);
     }
 }

@@ -1,25 +1,31 @@
 <?php
 namespace Procrastinator\Deferred;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Procrastinator\Exception\InvalidArgumentException;
 
 class BuilderTest extends TestCase
 {
-    public function setUp()
+    /** @var Builder */
+    private $builder;
+
+    protected function setUp()
     {
         $this->builder = new Builder();
     }
 
     public function testExceptionIsThrownWithoutName()
     {
-        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'No name given. Call name()');
-        $this->builder->call(array($this, __FUNCTION__));
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No name given. Call name()');
+        $this->builder->call([$this, __FUNCTION__]);
         $this->builder->build();
     }
 
     public function testExceptionIsThrownWithoutCallback()
     {
-        $this->setExpectedException('Procrastinator\Exception\InvalidArgumentException', 'No callback given. Call call()');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No callback given. Call call()');
         $this->builder->name('test');
         $this->builder->build();
     }
@@ -27,23 +33,23 @@ class BuilderTest extends TestCase
     public function testCallbackDeferredIsBuiltWithoutDoctrineCondition()
     {
         $this->assertSame($this->builder, $this->builder->name('test'));
-        $this->assertSame($this->builder, $this->builder->call(array($this, __FUNCTION__)));
+        $this->assertSame($this->builder, $this->builder->call([$this, __FUNCTION__]));
         $deferred = $this->builder->build();
         /** We want to test for the class exactly */
-        $this->assertSame('Procrastinator\Deferred\CallbackDeferred', get_class($deferred));
+        $this->assertInstanceOf(CallbackDeferred::class, $deferred);
         $this->assertSame('test', $deferred->getName());
-        $this->assertSame(array($this, __FUNCTION__), $deferred->getCallback());
+        $this->assertSame([$this, __FUNCTION__], $deferred->getCallback());
     }
 
     public function testDoctrineConditionalDeferredIsBuiltWithDoctrineCondition()
     {
         $this->assertSame($this->builder, $this->builder->name('test'));
-        $this->assertSame($this->builder, $this->builder->call(array($this, __FUNCTION__)));
+        $this->assertSame($this->builder, $this->builder->call([$this, __FUNCTION__]));
         $this->assertSame($this->builder, $this->builder->ifDoctrineEvent('postLoad'));
         $deferred = $this->builder->build();
         /** We want to test for the class exactly */
-        $this->assertSame('Procrastinator\Deferred\DoctrineEventConditionalDeferred', get_class($deferred));
+        $this->assertInstanceOf(DoctrineEventConditionalDeferred::class, $deferred);
         $this->assertSame('test', $deferred->getName());
-        $this->assertSame(array($this, __FUNCTION__), $deferred->getCallback());
+        $this->assertSame([$this, __FUNCTION__], $deferred->getCallback());
     }
 }

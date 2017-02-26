@@ -1,18 +1,23 @@
 <?php
 namespace Procrastinator\Executor;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Procrastinator\Deferred\CallbackDeferred;
 
 class SingleThreadExecutorTest extends TestCase
 {
+    /** @var SingleThreadExecutor */
     private $executor;
+
+    /** @var CallbackDeferred */
+    private $deferred;
+
     private $called = 0;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->executor = new SingleThreadExecutor();
-        $this->deferred = new CallbackDeferred('name', array($this, 'procrastinatorCallback'));
+        $this->deferred = new CallbackDeferred('name', [$this, 'procrastinatorCallback']);
     }
 
     public function testExecuteCallsCallback()

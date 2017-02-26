@@ -1,11 +1,10 @@
 <?php
 namespace Procrastinator;
 
-use Procrastinator\Deferred\Deferred;
-use Procrastinator\Scheduler\Scheduler;
-use Procrastinator\Executor\Executor;
-use DomainException;
 use Procrastinator\Deferred\Builder;
+use Procrastinator\Deferred\Deferred;
+use Procrastinator\Executor\Executor;
+use Procrastinator\Scheduler\Scheduler;
 
 class DeferralManager extends Manager implements Schedulable
 {
@@ -33,13 +32,13 @@ class DeferralManager extends Manager implements Schedulable
     public function schedule()
     {
         if (!$this->deferreds) {
-            return;
+            return null;
         }
 
         $executableManager = new ExecutableManager($this->deferreds, $this->executor);
         $this->scheduler->schedule($executableManager);
 
-        $this->deferreds = array();
+        $this->deferreds = [];
 
         return $executableManager;
     }

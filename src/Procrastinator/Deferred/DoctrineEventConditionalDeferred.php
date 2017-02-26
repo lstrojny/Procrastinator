@@ -7,7 +7,7 @@ class DoctrineEventConditionalDeferred extends CallbackDeferred
 {
     private $events;
 
-    public function __construct($name, $callback, $events)
+    public function __construct($name, callable $callback, $events)
     {
         if (!$events) {
             throw new InvalidArgumentException('No events specified');

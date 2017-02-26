@@ -9,12 +9,8 @@ class CallbackDeferred implements Deferred
 
     protected $callback;
 
-    public function __construct($name, $callback)
+    public function __construct($name, callable $callback)
     {
-        if (!is_callable($callback)) {
-            throw new InvalidArgumentException('Invalid callback given');
-        }
-
         $this->name = $name;
         $this->callback = $callback;
     }

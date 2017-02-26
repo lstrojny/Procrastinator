@@ -3,7 +3,7 @@ namespace Procrastinator;
 
 abstract class Manager implements Manageable
 {
-    protected $deferreds = array();
+    protected $deferreds = [];
 
     public function has($name)
     {

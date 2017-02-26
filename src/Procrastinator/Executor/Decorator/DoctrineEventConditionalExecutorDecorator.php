@@ -3,128 +3,127 @@ namespace Procrastinator\Executor\Decorator;
 
 use Procrastinator\Deferred\Deferred;
 use Procrastinator\Deferred\DoctrineEventConditionalDeferred;
-use Doctrine\Common\EventArgs;
 
 class DoctrineEventConditionalExecutorDecorator extends ExecutorDecorator
 {
-    private $events = array();
+    private $events = [];
 
-    public function postConnect(EventArgs $args)
+    public function postConnect()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaCreateTable(EventArgs $args)
+    public function onSchemaCreateTable()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaCreateTableColumn(EventArgs $args)
+    public function onSchemaCreateTableColumn()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaDropTable(EventArgs $args)
+    public function onSchemaDropTable()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaAlterTable(EventArgs $args)
+    public function onSchemaAlterTable()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaAlterTableAddColumn(EventArgs $args)
+    public function onSchemaAlterTableAddColumn()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaAlterTableRemoveColumn(EventArgs $args)
+    public function onSchemaAlterTableRemoveColumn()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaAlterTableChangeColumn(EventArgs $args)
+    public function onSchemaAlterTableChangeColumn()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaAlterTableRenameColumn(EventArgs $args)
+    public function onSchemaAlterTableRenameColumn()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaColumnDefinition(EventArgs $args)
+    public function onSchemaColumnDefinition()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onSchemaIndexDefinition(EventArgs $args)
+    public function onSchemaIndexDefinition()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function preRemove(EventArgs $args)
+    public function preRemove()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function postRemove(EventArgs $args)
+    public function postRemove()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function prePersist(EventArgs $args)
+    public function prePersist()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function postPersist(EventArgs $args)
+    public function postPersist()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function preUpdate(EventArgs $args)
+    public function preUpdate()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function postUpdate(EventArgs $args)
+    public function postUpdate()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function postLoad(EventArgs $args)
+    public function postLoad()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function loadClassMetadata(EventArgs $args)
+    public function loadClassMetadata()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function preFlush(EventArgs $args)
+    public function preFlush()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onFlush(EventArgs $args)
+    public function onFlush()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function postFlush(EventArgs $args)
+    public function postFlush()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onClear(EventArgs $args)
+    public function onClear()
     {
         $this->rememberEvent(__FUNCTION__);
     }
 
-    public function onClassMetadataNotFound(EventArgs $args)
+    public function onClassMetadataNotFound()
     {
         $this->rememberEvent(__FUNCTION__);
     }

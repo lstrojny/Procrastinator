@@ -12,7 +12,7 @@ class SingleThreadExecutor implements Executor
 
     public function execute(Deferred $deferred)
     {
-        call_user_func($deferred->getCallback());
+        $deferred->getCallback()();
     }
 
     public function endExecution(Executable $manager)

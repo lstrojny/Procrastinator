@@ -1,37 +1,38 @@
 <?php
 namespace Procrastinator\Scheduler;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Procrastinator\Executable;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class OnShutdownSchedulerTest extends TestCase
 {
-    /** @var Executable */
-    private $manager;
+    /** @var Executable|MockObject */
+    private $executable;
 
     /** @var OnShutdownScheduler */
     private $scheduler;
 
-    function setUp()
+    protected function setUp()
     {
-        $this->manager = $this->getMock('Procrastinator\Executable');
+        $this->executable = $this->createMock(Executable::class);
         $this->scheduler = new OnShutdownScheduler();
     }
 
-    function tearDown()
+    protected function tearDown()
     {
         unset($GLOBALS['register_shutdown_function']);
     }
 
-    function testCallRegisterShutdownOnSchedule()
+    public function testCallRegisterShutdownOnSchedule()
     {
         $this->assertArrayNotHasKey('register_shutdown_function', $GLOBALS);
-        $this->manager
+        $this->executable
             ->expects($this->never())
             ->method('execute');
-        $this->scheduler->schedule($this->manager);
+        $this->scheduler->schedule($this->executable);
 
-        $this->assertSame(array($this->manager, 'execute'), $GLOBALS['register_shutdown_function']);
+        $this->assertSame([$this->executable, 'execute'], $GLOBALS['register_shutdown_function']);
     }
 }
 
